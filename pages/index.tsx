@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../utils/supabaseClient'
+import { supabase } from '../utils/api/supabaseClient'
 import Login from '../components/Login'
 import { NextPage } from 'next'
 

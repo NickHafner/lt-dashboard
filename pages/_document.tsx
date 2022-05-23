@@ -1,27 +1,21 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import Document, { Html, Head, NextScript, Main } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+// pages/_document.js
 
-export default class MyDocument extends Document {
-  static getInitialProps({ renderPage }) {
-    const sheet = new ServerStyleSheet();
-    const page = renderPage(
-      (App) => (props) => sheet.collectStyles(<App {...props} />)
-    );
-    const styleTags = sheet.getStyleElement();
-    return { ...page, styleTags };
-  }
+import { ColorModeScript } from '@chakra-ui/react'
+import NextDocument, { Html, Head, Main, NextScript } from 'next/document'
+import { theme } from './_app'
 
+export default class Document extends NextDocument {
   render() {
     return (
-      <Html lang="en-CA">
+      <Html lang='en'>
         <Head />
         <body>
+          {/* 👇 Here's the script */}
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }

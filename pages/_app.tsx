@@ -1,20 +1,22 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import type { ThemeProvider } from 'next-theme'
-import { supabase } from '../utils/supabaseClient'
-import { useRouter } from 'next/router'
+import { ChakraProvider } from '@chakra-ui/provider'
+import { extendTheme } from '@chakra-ui/react'
+
+const colors = {
+  brand: {
+    900: '#1a365d',
+    800: '#153e75',
+    700: '#2a69ac',
+  },
+}
+
+export const theme = extendTheme({ colors })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return     <ThemeProvider
-  attribute="class"
-  defaultTheme="system"
-  value={{
-    dark: darkTheme.className,
-    light: "light",
-  }}
->
-  <Component {...pageProps} />
-</ThemeProvider>
+  return (<ChakraProvider theme={theme}>
+    <Component {...pageProps} />
+  </ChakraProvider>)
 }
 
 export default MyApp
