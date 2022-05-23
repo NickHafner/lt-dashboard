@@ -1,6 +1,9 @@
 {
-  "name": "tmp",
+  "name": "lt-dashboard",
   "version": "0.1.0",
+  "description": "Webview of data generated from mobile lt app",
+  "author": "nickhafner@outlook.com",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",
