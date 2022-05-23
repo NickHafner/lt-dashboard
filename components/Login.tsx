@@ -1,28 +1,17 @@
 import { useState } from 'react'
-import { supabase } from '../utils/api/supabaseClient'
+import { HandleLogin } from '../utils/api';
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const handleLogin = async (email: string, password: string) => {
+  const handleLogin = async(email: string, password: string) => {
     if(!email || !password)
-        return
-    try {
-      setLoading(true)
-      const resp = await supabase.auth.signIn({ email, password })
-      console.log(resp)
-      const { error } = resp
-      if (error) throw error
-    } catch (error: any) {
-      alert(error.error_description || error.message)
-      setLoading(false)
-    } finally {
-      setLoading(false)
-    }
+      return
+    setLoading(true)
+    await HandleLogin(email, password)
+    setLoading(false)
   }
-
   return (
     <div className="row flex flex-center">
       <div className="col-6 form-widget">
@@ -55,7 +44,7 @@ export default function Login() {
             className="button block"
             disabled={loading}
           >
-            <span>{loading ? 'Loading' : 'Send magic link'}</span>
+            <span>{loading ? 'Loading' : 'Login'}</span>
           </button>
         </div>
       </div>
