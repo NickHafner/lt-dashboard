@@ -11,12 +11,10 @@ export async function getProfile(): Promise<Profile | ErrorResponse> {
                 error: null
             }
 
-        console.log(user)
-
         let { data, error, status } = await supabase
-            .from('profiles')
+            .from('user_profile')
             .select(`username`)
-            .eq('id', user.id)
+            .eq('profile_id', user.id)
             .single()
 
         if (error && status !== 406) throw error
