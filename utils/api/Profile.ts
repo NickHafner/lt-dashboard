@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js";
 import { ErrorResponse, Profile } from "../../types/api";
-import { supabase } from "./supabaseClient"
+import supabase from "../supabaseClient"
 
 export async function getProfile(): Promise<Profile | ErrorResponse> {
     try {
@@ -14,7 +14,7 @@ export async function getProfile(): Promise<Profile | ErrorResponse> {
         let { data, error, status } = await supabase
             .from('user_profile')
             .select(`username`)
-            .eq('profile_id', user.id)
+            .eq('user_id', user.id)
             .single()
 
         if (error && status !== 406) throw error

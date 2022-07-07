@@ -1,31 +1,32 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../utils/api/supabaseClient'
+import SupabaseClient from '../utils/supabaseClient'
 import Login from '../components/Login'
 import { NextPage } from 'next'
 import Router from 'next/router'
 import Head from 'next/head'
-import Account from '../components/Account'
 import { Session } from '@supabase/supabase-js'
+import { Box } from '@chakra-ui/react'
 
 
-const Home: NextPage = () => {
-  const [session, setSession] = useState<Session | null>(null)
+const LoginIn: NextPage = () => {
   useEffect(() => {
-    setSession(supabase.auth.session())
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+    if(SupabaseClient.auth.session())
+      Router.push('/profile')
+
+    SupabaseClient.auth.onAuthStateChange((_event, session) => {
+      Router.push('/profile')
     })
   }, [])
 
   return (<>
     <Head>
-      <title>{!session ? 'Login' : 'Home'}</title>
+      <title>Login</title>
     </Head>
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
-      {!session ? <Login /> : <Account session={session} />}
-    </div>
+    <Box className="container" style={{ padding: '50px 0 100px 0' }}>
+      <Login />
+    </Box>
   </>
   )
 }
 
-export default Home
+export default LoginIn

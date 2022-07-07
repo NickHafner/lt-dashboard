@@ -2,7 +2,7 @@ import { Session } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
 import { ErrorResponse, Profile } from '../types/api'
 import { getProfile, updateProfile } from '../utils/api/Profile'
-import { supabase } from '../utils/api/supabaseClient'
+import SupabaseClient from '../utils/supabaseClient'
 
 interface AccountProps {
   session: Session | null
@@ -76,7 +76,7 @@ export default function Account({ session }: AccountProps) {
       </div>
 
       <div>
-        <button className="button block" onClick={() => supabase.auth.signOut()}>
+        <button className="button block" onClick={() => SupabaseClient.auth.signOut()}>
           Sign Out
         </button>
       </div>
