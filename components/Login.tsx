@@ -33,7 +33,7 @@ export default function Login() {
           type="email"
           variant='outline' 
           bg='gray.800'
-          colorScheme='teal'
+          colorScheme='telegram'
           marginBottom='.8rem'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -45,7 +45,7 @@ export default function Login() {
           variant='outline' 
           marginBottom='.8rem'
           bg='gray.800'
-          colorScheme='teal'
+          colorScheme='telegram'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -54,6 +54,7 @@ export default function Login() {
           variant='outline'
           marginTop='.3rem'
           width='100%'
+          colorScheme='telegram'
           border='1px'
           onClick={(e) => {
             e.preventDefault()
