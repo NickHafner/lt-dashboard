@@ -1,20 +1,25 @@
-import { Session } from '@supabase/supabase-js'
-import { useState, useEffect } from 'react'
-import { useQuery } from 'react-query'
-import { User_Profile } from '../types/api'
-import { getProfile, updateProfile } from '../utils/api/Profile'
-import SupabaseClient from '../utils/supabaseClient'
+import { Session } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { User_Profile } from '../types/supabase/User_Profile';
+import { updateProfile } from '../utils/api/Profile';
+import SupabaseClient from '../utils/supabaseClient';
 
-export default function Account({ profile, loading, session }: { profile: User_Profile,
-   loading: boolean, session: Session | null}) {
-  const [username, setUsername] = useState(profile.username)
+export default function Account({
+  profile,
+  loading,
+  session
+}: {
+  profile: User_Profile;
+  loading: boolean;
+  session: Session | null;
+}) {
+  const [username, setUsername] = useState(profile.username);
 
-  const update = async(username: string) => {
-    await updateProfile(username)
+  const update = async (username: string) => {
+    await updateProfile(username);
   };
 
-  if(!session?.user)
-    return <div>You have been invalided</div>
+  if (!session?.user) return <div>You have been invalided</div>;
 
   return (
     <div className="form-widget">
@@ -52,10 +57,13 @@ export default function Account({ profile, loading, session }: { profile: User_P
       </div>
 
       <div>
-        <button className="button block" onClick={() => SupabaseClient.auth.signOut()}>
+        <button
+          className="button block"
+          onClick={() => SupabaseClient.auth.signOut()}
+        >
           Sign Out
         </button>
       </div>
     </div>
-  )
+  );
 }

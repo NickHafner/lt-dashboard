@@ -1,7 +1,7 @@
 import { Box, Button, Input, Text, Heading, AlertIcon, Alert } from '@chakra-ui/react';
 import { useState } from 'react'
 import { useMutation } from 'react-query';
-import { handleLogin } from '../utils/api';
+import { handleLogin } from '../../utils/api';
 
 export default function Login() {
   const [email, setEmail] = useState('')
