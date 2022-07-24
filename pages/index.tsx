@@ -14,7 +14,6 @@ const LoginIn: NextPage = () => {
       if (session.expires_at && session.expires_at > now)
         Router.push('/workoutManager');
     }
-
     SupabaseClient.auth.onAuthStateChange((_event, session) => {
       if (_event === 'SIGNED_IN') Router.push('/workoutManager');
     });

@@ -1,22 +1,20 @@
-import { Text } from '@chakra-ui/react';
 import Head from 'next/head';
 import { ReactElement } from 'react';
 import Layout from '../../components/Layout';
 import { NextPageWithLayout } from '../../types';
 
-const WorkoutManager: NextPageWithLayout = () => {
+const Dashboard: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Workouts</title>
+        <title>Dashboard</title>
       </Head>
-      <Text>example</Text>
     </>
   );
 };
 
-WorkoutManager.getLayout = function getLayout(page: ReactElement) {
+Dashboard.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default WorkoutManager;
+export default Dashboard;
