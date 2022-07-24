@@ -1,44 +1,20 @@
 import { Session } from '@supabase/supabase-js'
 import { useState, useEffect } from 'react'
-import { ErrorResponse, Profile } from '../types/api'
+import { useQuery } from 'react-query'
+import { User_Profile } from '../types/api'
 import { getProfile, updateProfile } from '../utils/api/Profile'
 import SupabaseClient from '../utils/supabaseClient'
 
-interface AccountProps {
-  session: Session | null
-}
-
-export default function Account({ session }: AccountProps) {
-  const [loading, setLoading] = useState(false)
-  const [hasError, setError] = useState(false)
-  const [username, setUsername] = useState('')
-  // const [website, setWebsite] = useState(null)
-  // const [avatar_url, setAvatarUrl] = useState(null)
-
-  useEffect(() => {
-    const fetch = async() => {
-      const data = await getProfile()
-      const error = data as ErrorResponse
-      const success = data as Profile
-      if(error.errorCode)
-        setError(true)
-      else
-        setUsername(success.username)
-    }
-    fetch()
-  }, [session])
+export default function Account({ profile, loading, session }: { profile: User_Profile,
+   loading: boolean, session: Session | null}) {
+  const [username, setUsername] = useState(profile.username)
 
   const update = async(username: string) => {
-    setLoading(true)
-    const response = await updateProfile(username)
-    setLoading(false)
+    await updateProfile(username)
   };
 
   if(!session?.user)
     return <div>You have been invalided</div>
-
-  if(hasError)
-    return <div>Sorry</div>
 
   return (
     <div className="form-widget">

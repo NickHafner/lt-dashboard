@@ -1,58 +1,40 @@
 import { User } from "@supabase/supabase-js";
-import { ErrorResponse, Profile } from "../../types/api";
+import { User_Profile } from "../../types/api";
 import supabase from "../supabaseClient"
+import { handleSupabaseErrors } from "./common";
 
-export async function getProfile(): Promise<Profile | ErrorResponse> {
-    try {
-        const user: User | null = supabase.auth.user()
-        if(!user)
-            return {
-                errorCode: 403,
-                error: null
-            }
+export async function getProfile(): Promise<User_Profile> {
+    const user: User | null = supabase.auth.user()
+    if(!user)
+        throw new Error("User is null")
 
-        let { data, error, status } = await supabase
-            .from('user_profile')
-            .select(`username`)
-            .eq('user_id', user.id)
-            .single()
+    const { data, error } = await supabase
+        .from('user_profile')
+        .select(`username`)
+        .eq('user_id', user.id)
+        .limit(1)
+        .single()
+    console.log(error)
+    if(error)
+        throw new Error("API request failed")
 
-        if (error && status !== 406) throw error
-
-        return { username: data.username, email: data.email };
-    } catch (error: any) {
-        return {
-            errorCode: 500,
-            error: null
-        }
-    }
+    return { username: data.username };
 }
 
-export async function updateProfile({ username }: any): Promise<number | ErrorResponse> {
-    try {
-        const user:any = supabase.auth.user()
+export function updateProfile({ username }: any) {
+    const user: User | null = supabase.auth.user()
+    if(!user)
+        throw new Error("User is null")
 
-        const updates = {
-        id: user.id,
+    const updates = {
+        user_id: user.id,
         username,
         updated_at: new Date(),
-        }
-
-        let { error } = await supabase.from('profiles').upsert(updates, {
-            returning: 'minimal', 
-        })
-
-        if (error) 
-            return {
-                errorCode: Number(error.code),
-                error: error.message
-            }
-        else
-            return 200
-    } catch (error: any) {
-        return {
-            errorCode: 500,
-            error: null
-        }
     }
+
+    supabase.from('user_profile').upsert(updates, {
+        returning: 'minimal', 
+    }).then(handleSupabaseErrors)
+
+    return 200;
 }

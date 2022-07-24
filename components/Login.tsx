@@ -1,19 +1,15 @@
-import { Box, Button, CircularProgress, Input, Text, Square, Heading } from '@chakra-ui/react';
+import { Box, Button, Input, Text, Heading, AlertIcon, Alert } from '@chakra-ui/react';
 import { useState } from 'react'
-import { HandleLogin } from '../utils/api';
-
+import { useMutation } from 'react-query';
+import { handleLogin } from '../utils/api';
 
 export default function Login() {
-  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const handleLogin = async(email: string, password: string) => {
-    if(!email || !password)
-      return
-    setLoading(true)
-    await HandleLogin(email, password)
-    setLoading(false)
-  }
+  const [secretValue, setSecretValue] = useState('s1')
+  const loginMutation = useMutation('login', () => handleLogin(email, password, secretValue));
+  const { isLoading, isError } = loginMutation
+
   return (
     <>
       <Box marginBottom='1.4rem' display='flex' justifyContent='center'>
@@ -33,8 +29,11 @@ export default function Login() {
           type="email"
           variant='outline' 
           bg='gray.800'
-          colorScheme='telegram'
           marginBottom='.8rem'
+          onKeyDown={(e) => {
+            if(e.key === 'Enter')
+              loginMutation.mutate()
+          }}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -45,12 +44,30 @@ export default function Login() {
           variant='outline' 
           marginBottom='.8rem'
           bg='gray.800'
-          colorScheme='telegram'
+          onKeyDown={(e) => {
+            if(e.key === 'Enter')
+              loginMutation.mutate()
+          }}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Input
+          style={{ display: 'none'}}
+          type="password"
+          value={secretValue}
+          name="secret"
+          onChange={(e) => setSecretValue(e.target.value)}
+        />
+        {isError && <Alert 
+        status='error'
+        marginBottom='.4rem'
+        borderRadius={'.375rem'}
+        outline={'2px solid transparent'}
+        >
+          <AlertIcon />The email/password you entered are incorrect 
+        </Alert>}
         <Button
-          isLoading={loading}
+          isLoading={isLoading}
           variant='outline'
           marginTop='.3rem'
           width='100%'
@@ -58,15 +75,14 @@ export default function Login() {
           border='1px'
           onClick={(e) => {
             e.preventDefault()
-            handleLogin(email, password)
+            loginMutation.mutate()
           }}
           className="button block"
-          disabled={loading}
+          disabled={isLoading}
         >
           <span>Sign in</span>
         </Button>
       </Box>
-
     </>
   )
 }

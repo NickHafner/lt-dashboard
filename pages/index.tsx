@@ -1,20 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import SupabaseClient from '../utils/supabaseClient'
 import Login from '../components/Login'
 import { NextPage } from 'next'
 import Router from 'next/router'
 import Head from 'next/head'
-import { Session } from '@supabase/supabase-js'
 import { Box } from '@chakra-ui/react'
 
 
 const LoginIn: NextPage = () => {
   useEffect(() => {
-    if(SupabaseClient.auth.session())
-      Router.push('/profile')
+    const session = SupabaseClient.auth.session()
+    if(session !== null){
+      const now = Math.round(Date.now() / 1000)
+      if(session.expires_at && session.expires_at > now) 
+        Router.push('/home')
+    }
 
     SupabaseClient.auth.onAuthStateChange((_event, session) => {
-      Router.push('/profile')
+      if(_event === 'SIGNED_IN')
+        Router.push('/home')
     })
   }, [])
 

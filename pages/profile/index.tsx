@@ -11,9 +11,6 @@ const Profile: NextPage = () => {
       <Head>
         <title>Login</title>
       </Head>
-      <div className="container" style={{ padding: '50px 0 100px 0' }}>
-        <Account session={SupabaseClient.auth.session()}/>
-      </div>
     </>
     )
   }
